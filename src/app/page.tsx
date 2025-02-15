@@ -13,10 +13,18 @@ export default function HomePage() {
       <Navbar />
       <HeroSection />
       <Discover />
-      <AmenitiesPage />
-      <Partner />
-      <Membership />
-      <Contact />
+      <div id="amenities">
+        <AmenitiesPage />
+      </div>
+      <div id="family">
+        <Partner />
+      </div>
+      <div id="membership">
+        <Membership />
+      </div>
+      <div id="contact">
+        <Contact />
+      </div>
     </>
   );
 }
