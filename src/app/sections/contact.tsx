@@ -9,7 +9,7 @@ export default function Contact() {
     <section className="bg-[#020617] text-white py-16 px-6 sm:px-12 lg:px-20">
       <div className="container mx-auto">
         <motion.h2 
-          className="text-4xl sm:text-5xl font-bold text-center"
+          className="text-4xl sm:text-5xl font-bold text-left mb-6"
           initial={{ opacity: 0, y: 50 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
@@ -32,7 +32,7 @@ export default function Contact() {
               </div>
               <input type="text" placeholder="Company" className="w-full bg-transparent border border-white p-3 rounded-md focus:outline-none" />
               <input type="email" placeholder="Email" className="w-full bg-transparent border border-white p-3 rounded-md focus:outline-none" />
-              <textarea placeholder="Write your request here..." className="w-full bg-transparent border border-white p-3 rounded-md focus:outline-none" rows="3"></textarea>
+              <textarea placeholder="Write your request here..." className="w-full bg-transparent border border-white p-3 rounded-md focus:outline-none"></textarea>
               <div className="flex items-start gap-2">
                 <input type="checkbox" id="privacy" className="w-4 h-4 mt-1" />
                 <label htmlFor="privacy" className="text-sm text-gray-400">I authorize the processing of my personal data in accordance with the Privacy policy</label>
