@@ -6,15 +6,15 @@ import { motion } from "framer-motion";
 import { FaBuilding, FaDesktop, FaExchangeAlt, FaUsers, FaTicketAlt, FaCalendarAlt } from "react-icons/fa";
 
 const plans = [
-  { title: "Private Office", icon: <FaBuilding />, price: "Rs.10,000/month", description: "A home for your business or a space to jam with your team? Our spacious private offices have room for 5!", link: "#" },
-  { title: "Fixed Desk", icon: <FaDesktop />, price: "Rs.6,000/month", description: "Bring your screens and get tucked in. This desk is yours and only yours (unless of course you want to share)!", link: "#" },
-  { title: "Flex Desk", icon: <FaExchangeAlt />, price: "Rs.5,500/month", description: "Need a desk from time to time? Or a central spot to host meetings? We got ya!", link: "#" },
+  { title: "Private Office", icon: <FaBuilding />, price: "Rs.10,000/month", description: "A home for your business or a space to jam with your team? Our spacious private offices have room for 5!", link: "#1" },
+  { title: "Fixed Desk", icon: <FaDesktop />, price: "Rs.6,000/month", description: "Bring your screens and get tucked in. This desk is yours and only yours (unless of course you want to share)!", link: "#2" },
+  { title: "Flex Desk", icon: <FaExchangeAlt />, price: "Rs.5,500/month", description: "Need a desk from time to time? Or a central spot to host meetings? We got ya!", link: "#3" },
 ];
 
 const visits = [
-  { title: "Meeting Room", icon: <FaUsers />, price: "Rs.1,500/day", description: "In town for a couple of days to meet with your remote team? Book our meeting room for up to 8 max!", link: "#" },
-  { title: "Day Pass", icon: <FaTicketAlt />, price: "Rs.500/day", description: "Just you? Rs.500/day gets you a desk and access to all our amenities. Come hang out!", link: "#" },
-  { title: "Week Pass", icon: <FaCalendarAlt />, price: "Rs.1,000/week", description: "Trying out Lisbon? Rs.1,000 gets you access from Monday through Sunday at any hour.", link: "#" },
+  { title: "Meeting Room", icon: <FaUsers />, price: "Rs.1,500/day", description: "In town for a couple of days to meet with your remote team? Book our meeting room for up to 8 max!", link: "#4" },
+  { title: "Day Pass", icon: <FaTicketAlt />, price: "Rs.500/day", description: "Just you? Rs.500/day gets you a desk and access to all our amenities. Come hang out!", link: "#5" },
+  { title: "Week Pass", icon: <FaCalendarAlt />, price: "Rs.1,000/week", description: "Trying out Lisbon? Rs.1,000 gets you access from Monday through Sunday at any hour.", link: "#6" },
 ];
 
 const Membership = () => {

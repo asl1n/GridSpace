@@ -2,8 +2,15 @@
 
 import { useState, useEffect } from "react";
 import Image from "next/image";
-import Link from "next/link";
 import { Menu } from "lucide-react";
+
+
+const links = [
+  { name: "Amenities", id: "amenities" },
+  { name: "Family", id: "family" },
+  { name: "Prices", id: "membership" },
+  { name: "Contact us", id: "contact" },
+];
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -41,14 +48,9 @@ const Navbar = () => {
 
       {/* Desktop Links */}
       <div className="hidden md:flex space-x-6">
-        {[
-          { name: "Amenities", id: "amenities" },
-          { name: "Family", id: "family" },
-          { name: "Prices", id: "membership" },
-          { name: "Contact us", id: "contact" },
-        ].map((link) => (
+        {links.map((link) => (
           <a
-            key={link.name}
+            key={link.id} 
             href={`#${link.id}`}
             className="text-black hover:text-gray-900 transition-colors duration-200 text-base font-medium"
           >
@@ -73,14 +75,9 @@ const Navbar = () => {
       {/* Mobile Menu */}
       {isOpen && (
         <div className="absolute top-full left-0 w-full bg-white shadow-md py-4 flex flex-col items-center space-y-3 md:hidden">
-          {[
-            { name: "Amenities", id: "amenities" },
-            { name: "Family", id: "family" },
-            { name: "Prices", id: "membership" },
-            { name: "Contact us", id: "contact" },
-          ].map((link) => (
+          {links.map((link) => (
             <a
-              key={link.name}
+              key={link.id} 
               href={`#${link.id}`}
               className="text-gray-700 hover:text-black text-base font-medium"
               onClick={() => setIsOpen(false)}
