@@ -6,26 +6,29 @@ import { useState } from "react";
 export const HoverEffect = ({
   items,
   className,
+  onItemClick,
 }: {
   items: {
     title: string;
     price: string;
     description: string;
     link: string;
+    icon?: React.ReactNode; 
   }[];
   className?: string;
+  onItemClick?: (item: any) => void; 
 }) => {
   let [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
 
   return (
     <div className={cn("grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 py-10", className)}>
       {items.map((item, idx) => (
-        <Link
-          href={item.link}
+        <div
           key={item.link}
           className="relative group block p-4 h-full w-full"
           onMouseEnter={() => setHoveredIndex(idx)}
           onMouseLeave={() => setHoveredIndex(null)}
+          onClick={() => onItemClick && onItemClick(item)} // Trigger onItemClick
         >
           <AnimatePresence>
             {hoveredIndex === idx && (
@@ -39,11 +42,11 @@ export const HoverEffect = ({
             )}
           </AnimatePresence>
           <Card>
-            <CardTitle>{item.title}</CardTitle>
+            <CardTitle icon={item.icon}>{item.title}</CardTitle> {/* Pass icon to CardTitle */}
             <CardDescription>{item.description}</CardDescription>
             <CardPrice>{item.price}</CardPrice>
           </Card>
-        </Link>
+        </div>
       ))}
     </div>
   );
@@ -62,8 +65,13 @@ export const Card = ({ className, children }: { className?: string; children: Re
   );
 };
 
-export const CardTitle = ({ className, children }: { className?: string; children: React.ReactNode }) => {
-  return <h4 className={cn("text-white font-bold text-lg", className)}>{children}</h4>;
+export const CardTitle = ({ className, children, icon }: { className?: string; children: React.ReactNode; icon?: React.ReactNode }) => {
+  return (
+    <h4 className={cn("text-white font-bold text-lg flex items-center justify-center", className)}>
+      {icon && <span className="mr-2">{icon}</span>} {/* Display icon if provided */}
+      {children}
+    </h4>
+  );
 };
 
 export const CardPrice = ({ className, children }: { className?: string; children: React.ReactNode }) => {
