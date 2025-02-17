@@ -57,7 +57,7 @@ export default function Dashboard() {
     }
   };
 
-  if (!isClient) return null; // Prevent hydration issues
+  if (!isClient) return null; 
 
   return (
     <SidebarProvider>

@@ -34,16 +34,26 @@ export default function LoginPage() {
       });
       return;
     }
-
+  
     const obj = {
       email: email,
       password: password,
     };
-    console.log(obj);
+  
     try {
       const response = await loginService.login(obj);
       if (response.status === 200) {
-        router.push("/");
+        // Check if the user is an admin
+        const isAdmin = response.data.user.roles.some(role => role.name === 'admin');
+  
+        if (isAdmin) {
+          // Redirect to the dashboard if the user is an admin
+          router.push("/dashboard");
+        } else {
+          // Redirect to the home page for regular users
+          router.push("/");
+        }
+  
         toast({
           title: "Login Successful",
           description: "You have successfully logged in.",

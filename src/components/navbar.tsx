@@ -27,6 +27,7 @@ const Navbar = () => {
     setIsLoggedIn(!!token);
   }, []);
 
+  // Handle scroll to show/hide navbar
   useEffect(() => {
     const handleScroll = () => {
       if (window.scrollY > lastScrollY) {
@@ -41,6 +42,7 @@ const Navbar = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, [lastScrollY]);
 
+  // Handle logout
   const handleLogout = () => {
     localStorage.removeItem("Authentication");
     setIsLoggedIn(false);
@@ -50,15 +52,18 @@ const Navbar = () => {
       description: "You have been logged out successfully.",
       variant: "default",
     });
-    router.push("/"); // Redirect to home page after logout
+    router.push("/"); 
+    window.location.reload(); 
   };
 
+  // Handle click outside the logout modal
   const handleClickOutside = (event: MouseEvent) => {
     if (modalRef.current && !modalRef.current.contains(event.target as Node)) {
       setShowLogoutModal(false);
     }
   };
 
+  // Add/remove event listener for clicking outside the modal
   useEffect(() => {
     if (showLogoutModal) {
       document.addEventListener("mousedown", handleClickOutside);
@@ -70,6 +75,7 @@ const Navbar = () => {
 
   return (
     <>
+      {/* Navbar */}
       <nav
         className={`fixed top-4 left-1/2 transform -translate-x-1/2 bg-white px-6 py-3 
         rounded-full shadow-lg flex items-center justify-between w-[60%] max-w-[800px] z-50 
@@ -80,7 +86,13 @@ const Navbar = () => {
         {/* Logo */}
         <div className="flex items-center space-x-4">
           <button onClick={() => router.push("/")}>
-            <Image src="/Logo.png" alt="Logo" width={40} height={40} className="h-10 w-9" />
+            <Image
+              src="/Logo.png"
+              alt="Logo"
+              width={40}
+              height={40}
+              className="h-10 w-9"
+            />
           </button>
         </div>
 
@@ -159,7 +171,10 @@ const Navbar = () => {
       {/* Logout Modal */}
       {showLogoutModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
-          <div ref={modalRef} className="bg-white rounded-lg p-6 w-80 text-center shadow-lg">
+          <div
+            ref={modalRef}
+            className="bg-white rounded-lg p-6 w-80 text-center shadow-lg"
+          >
             <h2 className="text-lg font-semibold mb-4">Confirm Logout</h2>
             <p className="text-gray-600 mb-4">Are you sure you want to log out?</p>
             <div className="flex justify-center space-x-4">
