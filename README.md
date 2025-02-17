@@ -4,7 +4,7 @@ GridSpace is a web application built using Next.js (TypeScript) that allows user
 
 ## Repository Links
 - **Frontend Code:** [GitHub - asl1n/GridSpace](https://github.com/asl1n/GridSpace.git)
-- **Backend API:** [GitHub - Kripalshr/grid-space-api](https://github.com/Kripalshr/grid-space-api.git)
+- **Backend API:** [GitHub - asl1n/grid-space-api](https://github.com/asl1n/grid-space-api.git)
 
 ## Prerequisites
 
@@ -14,7 +14,7 @@ Before running this frontend, you need to set up the backend service.
 
 1. Clone the backend repository:
    ```sh
-   git clone https://github.com/Kripalshr/grid-space-api.git
+   git clone https://github.com/asl1n/grid-space-api.git
    ```
 2. Navigate to the backend folder:
    ```sh
