@@ -4,6 +4,8 @@ import React, { useState } from "react";
 import { HoverEffect } from "@/components/ui/card-hover-effect";
 import { motion } from "framer-motion";
 import { FaBuilding, FaDesktop, FaExchangeAlt, FaUsers, FaTicketAlt, FaCalendarAlt } from "react-icons/fa";
+import bookingService from "@/app/services/bookingService"
+import subscriptionService from "@/app/services/subscriptionService"
 
 const plans = [
   { title: "Private Office", icon: <FaBuilding />, price: "Rs.10,000/month", description: "A home for your business or a space to jam with your team? Our spacious private offices have room for 5!" },
@@ -20,7 +22,9 @@ const visits = [
 const Membership = () => {
   const [userLoggedIn, setUserLoggedIn] = useState(false);
   const [bookingItem, setBookingItem] = useState<any>(null);
+  const [selectedItem, setSelectedItem] = useState<any>(null);
   const [modalOpen, setModalOpen] = useState(false);
+  const [subscriptionModal, setSubscriptionModal] = useState(false);
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
 
@@ -33,11 +37,73 @@ const Membership = () => {
     setModalOpen(true);
   };
 
-  const confirmBooking = () => {
+  const confirmBooking = async() => {
     console.log("Booking confirmed for:", bookingItem?.title);
-    console.log("Start Date:", startDate);
-    console.log("End Date:", endDate);
+    const bookingDate = new Date(startDate);
+    bookingDate.setHours(9,0,0,0)
+    console.log("Start Date:", bookingDate);
+    const checkoutDate = new Date(endDate);
+    checkoutDate.setHours(16,0,0,0)
+    console.log("End Date:", checkoutDate);
+    const obj = {
+      fromDate: bookingDate,
+      toDate: checkoutDate,
+    };
+    try {
+      const response = await bookingService.booking(obj);
+
+      if (response.status === 200) {
+        console.log("Pass")
+        setModalOpen(false);
+      } else {
+        console.log("Fail")
+        setModalOpen(false);
+      }
+    } catch (error) {
+      console.log(error);
+    }
     setModalOpen(false);
+  };
+
+  const handleSubscription = (item: any) => {
+    // if (!userLoggedIn) {
+    //   alert("Please log in to subscribe.");
+    //   return;
+    // }
+    setSelectedItem(item);
+    setSubscriptionModal(true);
+  };
+
+  const confirmSubscription = async () => {
+    console.log("Subscription confirmed for:", selectedItem?.title);
+  
+    const today = new Date();
+    const nextMonth = new Date();
+    nextMonth.setMonth(today.getMonth() + 1);
+  
+    const obj = {
+      fromDate: today,
+      toDate: nextMonth,
+    };
+  
+    try {
+      const response = await subscriptionService.subscription(obj);
+  
+      if (response.status === 200) {
+        console.log("Subscription Successful");
+      } else {
+        console.log("Subscription Failed");
+      }
+    } catch (error) {
+      console.log("Error:", error);
+    }
+  
+    setSubscriptionModal(false); 
+  };  
+
+  const closeModal = () => {
+    setModalOpen(false);
+    setSubscriptionModal(false);
   };
 
   return (
@@ -51,7 +117,7 @@ const Membership = () => {
           viewport={{ once: true }} 
           transition={{ duration: 0.5 }}
         >
-          <HoverEffect items={plans} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6" onItemClick={handleBooking} />
+          <HoverEffect items={plans} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6" onItemClick={handleSubscription} />
         </motion.div>
       </div>
 
@@ -69,8 +135,14 @@ const Membership = () => {
       </div>
 
       {modalOpen && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-          <div className="bg-[#020617] p-6 rounded-lg max-w-md w-full">
+        <div 
+          className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center"
+          onClick={closeModal} // Close modal when clicking outside
+        >
+          <div 
+            className="bg-[#020617] p-6 rounded-lg max-w-md w-full"
+            onClick={(e) => e.stopPropagation()} // Prevent modal from closing when clicking inside
+          >
             <h2 className="text-2xl font-bold mb-4">Booking Confirmation</h2>
             <p>You are booking: <strong>{bookingItem?.title}</strong></p>
             <div className="mt-4">
@@ -91,18 +163,50 @@ const Membership = () => {
                 onChange={(e) => setEndDate(e.target.value)}
               />
             </div>
-            <button 
-              className="bg-blue-500 text-white px-4 py-2 rounded mt-4"
-              onClick={confirmBooking}
-            >
-              Confirm Booking
-            </button>
-            <button 
-              className="bg-gray-500 text-white px-4 py-2 rounded mt-4 ml-2"
-              onClick={() => setModalOpen(false)}
-            >
-              Cancel
-            </button>
+            <div className="flex justify-end mt-6">
+              <button 
+                className="bg-blue-500 text-white px-4 py-2 rounded"
+                onClick={confirmBooking}
+              >
+                Confirm Booking
+              </button>
+              <button 
+                className="bg-gray-500 text-white px-4 py-2 rounded ml-2"
+                onClick={closeModal}
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {subscriptionModal && (
+        <div 
+          className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center"
+          onClick={closeModal} // Close modal when clicking outside
+        >
+          <div 
+            className="bg-[#020617] p-6 rounded-lg max-w-md w-full"
+            onClick={(e) => e.stopPropagation()} // Prevent modal from closing when clicking inside
+          >
+            <h2 className="text-2xl font-bold mb-4">Confirm Subscription</h2>
+            <p>You are subscribing to: <strong>{selectedItem?.title}</strong></p>
+            <p className="mt-2">Price: <strong>{selectedItem?.price}</strong></p>
+            <div className="flex justify-end mt-6">
+              <button 
+                className="bg-blue-500 text-white px-4 py-2 rounded"
+                onClick={confirmSubscription}
+              >
+                Confirm
+              </button>
+              <button 
+                className="bg-gray-500 text-white px-4 py-2 rounded ml-2"
+                onClick={closeModal}
+              >
+                Cancel
+              </button>
+            </div>
           </div>
         </div>
       )}

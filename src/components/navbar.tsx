@@ -4,7 +4,6 @@ import { useState, useEffect } from "react";
 import Image from "next/image";
 import { Menu } from "lucide-react";
 
-
 const links = [
   { name: "Amenities", id: "amenities" },
   { name: "Family", id: "family" },
