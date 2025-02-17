@@ -7,6 +7,7 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import 'swiper/css/pagination';
 import { Pagination } from 'swiper/modules';
+import { WobbleCard } from '@/components/ui/wobble-image'; 
 
 const malls = [
   { name: 'CITY CENTER', image: '/city-center.png' },
@@ -46,13 +47,15 @@ export default function Partner() {
               className="border border-white/30 rounded-xl p-5 sm:p-6 shadow-lg flex flex-col items-center w-full mx-auto"
               variants={{ hidden: { opacity: 0, scale: 0.9 }, visible: { opacity: 1, scale: 1 } }}
             >
-              <Image
-                src={mall.image}
-                width={280}
-                height={180}
-                alt={mall.name}
-                className="rounded-lg w-full object-cover"
-              />
+              <WobbleCard>
+                <Image
+                  src={mall.image}
+                  width={280}
+                  height={180}
+                  alt={mall.name}
+                  className="rounded-lg w-full object-cover"
+                />
+              </WobbleCard>
               <h3 className="text-lg font-semibold mt-3">{mall.name}</h3>
             </motion.div>
           ))}
@@ -75,13 +78,15 @@ export default function Partner() {
                   whileInView={{ opacity: 1, scale: 1 }}
                   transition={{ duration: 0.6 }}
                 >
-                  <Image
-                    src={mall.image}
-                    width={300}
-                    height={200}
-                    alt={mall.name}
-                    className="rounded-lg w-full object-cover"
-                  />
+                  <WobbleCard>
+                    <Image
+                      src={mall.image}
+                      width={300}
+                      height={200}
+                      alt={mall.name}
+                      className="rounded-lg w-full object-cover"
+                    />
+                  </WobbleCard>
                   <h3 className="text-lg font-semibold mt-3">{mall.name}</h3>
                 </motion.div>
               </SwiperSlide>

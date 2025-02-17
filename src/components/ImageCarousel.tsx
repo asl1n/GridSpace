@@ -4,6 +4,7 @@ import Image from 'next/image';
 import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence, useInView } from 'framer-motion';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { WobbleCard } from '@/components/ui/wobble-image';
 
 const images: string[] = [
   '/OF-1.png',
@@ -63,15 +64,18 @@ const ImageCarousel: React.FC = () => {
               exit={{ opacity: 0, scale: 0.8, y: 30 }}
               transition={{ duration: 0.5, ease: 'easeOut', delay: index * 0.2 }}
             >
-              <Image
-                src={src}
-                width={400}
-                height={500}
-                className="w-full h-[400px] sm:h-[450px] rounded-[20px] object-cover shadow-lg"
-                alt={`Slide ${index}`}
-                priority
-                unoptimized
-              />
+              {/* Wrap the Image with WobbleCard */}
+              <WobbleCard>
+                <Image
+                  src={src}
+                  width={400}
+                  height={500}
+                  className="w-full h-[400px] sm:h-[450px] rounded-[20px] object-cover shadow-lg"
+                  alt={`Slide ${index}`}
+                  priority
+                  unoptimized
+                />
+              </WobbleCard>
             </motion.div>
           ))}
         </AnimatePresence>
