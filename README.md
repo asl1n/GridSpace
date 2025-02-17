@@ -1,36 +1,87 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# GridSpace Frontend
 
-## Getting Started
+GridSpace is a web application built using Next.js (TypeScript) that allows users to book workplaces and manage memberships. This repository contains the frontend code for GridSpace.
 
-First, run the development server:
+## Repository Links
+- **Frontend Code:** [GitHub - asl1n/GridSpace](https://github.com/asl1n/GridSpace.git)
+- **Backend API:** [GitHub - asl1n/grid-space-api](https://github.com/asl1n/grid-space-api.git)
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## Prerequisites
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Before running this frontend, you need to set up the backend service.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Backend Setup
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+1. Clone the backend repository:
+   ```sh
+   git clone https://github.com/asl1n/grid-space-api.git
+   ```
+2. Navigate to the backend folder:
+   ```sh
+   cd grid-space-api
+   ```
+3. Install Laravel dependencies:
+   ```sh
+   composer install
+   ```
+4. Create a `.env` file from the `.env.example` template:
+   ```sh
+   cp .env.example .env
+   ```
+5. Set up your database:
+   - Open `.env` and update the `DB_DATABASE` value with your database name.
+   - Create the database manually using MySQL or any preferred database tool.
+6. Generate the application key:
+   ```sh
+   php artisan key:generate
+   ```
+7. Run migrations and seed the database:
+   ```sh
+   php artisan migrate --seed
+   ```
+8. Start the Laravel server:
+   ```sh
+   php artisan serve
+   ```
 
-## Learn More
+Now the backend should be running at `http://127.0.0.1:8000`.
 
-To learn more about Next.js, take a look at the following resources:
+## Frontend Setup
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+1. Clone this repository:
+   ```sh
+   git clone https://github.com/asl1n/GridSpace.git
+   ```
+2. Navigate to the project folder:
+   ```sh
+   cd GridSpace
+   ```
+3. Install dependencies:
+   ```sh
+   npm install
+   ```
+4. Create an `.env` file and configure the API URL:
+   ```sh
+   cp .env.example .env
+   ```
+   Edit `.env` and set the backend API URL:
+   ```sh
+   NEXT_PUBLIC_API_URL=<your-backend-url>/api
+   ```
+   - If running locally, set `NEXT_PUBLIC_API_URL=http://localhost:8000/api`
+   - For a deployed backend, replace it with the live backend URL.
+5. Run the frontend:
+   ```sh
+   npm run dev
+   ```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Now, you should be able to access the frontend at `http://localhost:3000` (or whatever port Next.js assigns).
 
-## Deploy on Vercel
+## Additional Notes
+- Ensure your backend is running before starting the frontend.
+- If you face any issues, check the backend logs (`storage/logs/laravel.log`) or frontend console errors.
+- For production, configure environment variables properly and build the frontend using:
+  ```sh
+  npm run build
+  ```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
