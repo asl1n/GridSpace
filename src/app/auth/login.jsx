@@ -2,10 +2,10 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { FaEye, FaEyeSlash } from "react-icons/fa";
+import { FaEye, FaEyeSlash, FaArrowLeft } from "react-icons/fa"; // Import back arrow icon
 import loginService from "@/app/services/loginService";
 import signupService from "@/app/services/signupService";
-import { toast } from "@/hooks/use-toast"; 
+import { toast } from "@/hooks/use-toast";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
@@ -25,6 +25,11 @@ export default function LoginPage() {
     setPhone("");
   };
 
+  // Handle back button click
+  const handleBack = () => {
+    router.push("/"); // Redirect to the main page
+  };
+
   const handleLogin = async () => {
     if (!email || !password) {
       toast({
@@ -34,18 +39,18 @@ export default function LoginPage() {
       });
       return;
     }
-  
+
     const obj = {
       email: email,
       password: password,
     };
-  
+
     try {
       const response = await loginService.login(obj);
       if (response.status === 200) {
         // Check if the user is an admin
-        const isAdmin = response.data.user.roles.some(role => role.name === 'admin');
-  
+        const isAdmin = response.data.user.roles.some((role) => role.name === "admin");
+
         if (isAdmin) {
           // Redirect to the dashboard if the user is an admin
           router.push("/dashboard");
@@ -53,7 +58,7 @@ export default function LoginPage() {
           // Redirect to the home page for regular users
           router.push("/");
         }
-  
+
         toast({
           title: "Login Successful",
           description: "You have successfully logged in.",
@@ -85,7 +90,7 @@ export default function LoginPage() {
       });
       return;
     }
-  
+
     // Validate email format
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
@@ -96,7 +101,7 @@ export default function LoginPage() {
       });
       return;
     }
-  
+
     // Validate password length
     if (password.length < 6) {
       toast({
@@ -106,7 +111,7 @@ export default function LoginPage() {
       });
       return;
     }
-  
+
     // Validate phone number format (assuming phone should be numeric and 10 digits long)
     const phoneRegex = /^\d{10}$/;
     if (!phoneRegex.test(phone)) {
@@ -117,7 +122,7 @@ export default function LoginPage() {
       });
       return;
     }
-  
+
     // If all validations pass, proceed with signup
     const obj = {
       name,
@@ -126,7 +131,7 @@ export default function LoginPage() {
       phone,
       password,
     };
-  
+
     try {
       const response = await signupService.register(obj);
       if (response.status === 200) {
@@ -155,9 +160,19 @@ export default function LoginPage() {
   return (
     <section className="flex min-h-screen flex-col justify-center items-center bg-slate-900 p-4">
       <div className="w-full max-w-md p-6 bg-white rounded-lg shadow-md transition-transform transform duration-300 ease-in-out">
+        {/* Back Button */}
+        <button
+          onClick={handleBack}
+          className="flex items-center text-gray-600 hover:text-black transition-colors duration-200 mb-4"
+        >
+          <FaArrowLeft className="mr-2" />
+        </button>
+
         <div className="flex justify-between mb-4 border-b pb-2">
           <button
-            className={`w-1/2 text-center py-2 transition-colors duration-300 ${activeTab === "login" ? "font-bold border-b-2 border-black "  : "text-gray-500"}`}
+            className={`w-1/2 text-center py-2 transition-colors duration-300 ${
+              activeTab === "login" ? "font-bold border-b-2 border-black " : "text-gray-500"
+            }`}
             onClick={() => {
               setActiveTab("login");
               resetForm();
@@ -166,7 +181,9 @@ export default function LoginPage() {
             Login
           </button>
           <button
-            className={`w-1/2 text-center py-2 transition-colors duration-300 ${activeTab === "signup" ? "font-bold border-b-2 border-black" : "text-gray-500"}`}
+            className={`w-1/2 text-center py-2 transition-colors duration-300 ${
+              activeTab === "signup" ? "font-bold border-b-2 border-black" : "text-gray-500"
+            }`}
             onClick={() => {
               setActiveTab("signup");
               resetForm();
@@ -181,9 +198,21 @@ export default function LoginPage() {
             <div>
               <h2 className="text-xl font-semibold mb-2">Login</h2>
               <p className="text-gray-600 mb-4">Enter your credentials to access your account.</p>
-              <input className="w-full p-2 mb-2 border rounded" type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} />
+              <input
+                className="w-full p-2 mb-2 border rounded"
+                type="email"
+                placeholder="Email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
               <div className="relative w-full">
-                <input className="w-full p-2 mb-4 border rounded pr-10" type={showPassword ? "text" : "password"} placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} />
+                <input
+                  className="w-full p-2 mb-4 border rounded pr-10"
+                  type={showPassword ? "text" : "password"}
+                  placeholder="Password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                />
                 <button
                   className="absolute right-3 top-3 text-gray-600"
                   onClick={() => setShowPassword(!showPassword)}
@@ -191,18 +220,53 @@ export default function LoginPage() {
                   {showPassword ? <FaEyeSlash /> : <FaEye />}
                 </button>
               </div>
-              <button className="w-full py-2 bg-black text-white rounded hover:bg-gray-900 transition" onClick={handleLogin}>Login</button>
+              <button
+                className="w-full py-2 bg-black text-white rounded hover:bg-gray-900 transition"
+                onClick={handleLogin}
+              >
+                Login
+              </button>
             </div>
           ) : (
             <div>
               <h2 className="text-xl font-semibold mb-2">Sign Up</h2>
               <p className="text-gray-600 mb-4">Create a new account to get started.</p>
-              <input className="w-full p-2 mb-2 border rounded" type="text" placeholder="Full Name" value={name} onChange={(e) => setName(e.target.value)} />
-              <input className="w-full p-2 mb-2 border rounded" type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} />
-              <input className="w-full p-2 mb-2 border rounded" type="text" placeholder="Username" value={username} onChange={(e) => setUsername(e.target.value)} />
-              <input className="w-full p-2 mb-2 border rounded" type="text" placeholder="Phone" value={phone} onChange={(e) => setPhone(e.target.value)} />
+              <input
+                className="w-full p-2 mb-2 border rounded"
+                type="text"
+                placeholder="Full Name"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+              />
+              <input
+                className="w-full p-2 mb-2 border rounded"
+                type="email"
+                placeholder="Email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
+              <input
+                className="w-full p-2 mb-2 border rounded"
+                type="text"
+                placeholder="Username"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+              />
+              <input
+                className="w-full p-2 mb-2 border rounded"
+                type="text"
+                placeholder="Phone"
+                value={phone}
+                onChange={(e) => setPhone(e.target.value)}
+              />
               <div className="relative w-full">
-                <input className="w-full p-2 mb-4 border rounded pr-10" type={showPassword ? "text" : "password"} placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} />
+                <input
+                  className="w-full p-2 mb-4 border rounded pr-10"
+                  type={showPassword ? "text" : "password"}
+                  placeholder="Password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                />
                 <button
                   className="absolute right-3 top-3 text-gray-600"
                   onClick={() => setShowPassword(!showPassword)}
@@ -210,7 +274,12 @@ export default function LoginPage() {
                   {showPassword ? <FaEyeSlash /> : <FaEye />}
                 </button>
               </div>
-              <button className="w-full py-2 bg-black text-white rounded hover:bg-gray-900 transition" onClick={handleSignup}>Sign Up</button>
+              <button
+                className="w-full py-2 bg-black text-white rounded hover:bg-gray-900 transition"
+                onClick={handleSignup}
+              >
+                Sign Up
+              </button>
             </div>
           )}
         </div>
