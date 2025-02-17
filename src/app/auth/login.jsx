@@ -3,8 +3,9 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
-import loginService from "@/app/services/loginService"
-import signupService from "@/app/services/signupService"
+import loginService from "@/app/services/loginService";
+import signupService from "@/app/services/signupService";
+import { toast } from "@/hooks/use-toast"; 
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
@@ -25,6 +26,15 @@ export default function LoginPage() {
   };
 
   const handleLogin = async () => {
+    if (!email || !password) {
+      toast({
+        title: "Validation Error",
+        description: "Please fill in all fields.",
+        variant: "destructive",
+      });
+      return;
+    }
+
     const obj = {
       email: email,
       password: password,
@@ -32,29 +42,73 @@ export default function LoginPage() {
     console.log(obj);
     try {
       const response = await loginService.login(obj);
-
       if (response.status === 200) {
         router.push("/");
-        // toast({
-        //   title: "Login Successful",
-        //   description: "Login Successfull",
-        //   action: ToastAction.CLOSE,
-        // });
-        console.log("pass")
+        toast({
+          title: "Login Successful",
+          description: "You have successfully logged in.",
+          variant: "default",
+        });
       } else {
-        // toast({
-        //   title: "Login failed",
-        //   description: response.message.data.error || "Unknown error",
-        //   action: ToastAction.CLOSE,
-        // });
-        console.log(error)
+        toast({
+          title: "Login Failed",
+          description: response.message?.data?.error || "Invalid email or password.",
+          variant: "destructive",
+        });
       }
     } catch (error) {
-      console.log(error);
+      toast({
+        title: "Error",
+        description: "An unexpected error occurred. Please try again.",
+        variant: "destructive",
+      });
     }
   };
 
   const handleSignup = async () => {
+    // Check if all fields are filled
+    if (!name || !email || !username || !phone || !password) {
+      toast({
+        title: "Validation Error",
+        description: "Please fill in all fields.",
+        variant: "destructive",
+      });
+      return;
+    }
+  
+    // Validate email format
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      toast({
+        title: "Validation Error",
+        description: "Please enter a valid email address.",
+        variant: "destructive",
+      });
+      return;
+    }
+  
+    // Validate password length
+    if (password.length < 6) {
+      toast({
+        title: "Validation Error",
+        description: "Password must be at least 6 characters long.",
+        variant: "destructive",
+      });
+      return;
+    }
+  
+    // Validate phone number format (assuming phone should be numeric and 10 digits long)
+    const phoneRegex = /^\d{10}$/;
+    if (!phoneRegex.test(phone)) {
+      toast({
+        title: "Validation Error",
+        description: "Phone number must be 10 digits long and contain only numbers.",
+        variant: "destructive",
+      });
+      return;
+    }
+  
+    // If all validations pass, proceed with signup
     const obj = {
       name,
       email,
@@ -62,26 +116,29 @@ export default function LoginPage() {
       phone,
       password,
     };
+  
     try {
       const response = await signupService.register(obj);
       if (response.status === 200) {
         router.push("/");
-        // toast({
-        //   title: "Signup Successful",
-        //   description: "Signup Successfull",
-        //   action: ToastAction.CLOSE,
-        // });
-        console.log("Signup Successful")
+        toast({
+          title: "Account Created",
+          description: "Your account has been created successfully.",
+          variant: "default",
+        });
       } else {
-        // toast({
-        //   title: "Login failed",
-        //   description: response.message.data.error || "Unknown error",
-        //   action: ToastAction.CLOSE,
-        // });
-        console.log("fail")
+        toast({
+          title: "Signup Failed",
+          description: response.message?.data?.error || "An error occurred during registration.",
+          variant: "destructive",
+        });
       }
     } catch (error) {
-      console.error("Signup error:", error);
+      toast({
+        title: "Error",
+        description: "An unexpected error occurred. Please try again.",
+        variant: "destructive",
+      });
     }
   };
 
@@ -90,7 +147,7 @@ export default function LoginPage() {
       <div className="w-full max-w-md p-6 bg-white rounded-lg shadow-md transition-transform transform duration-300 ease-in-out">
         <div className="flex justify-between mb-4 border-b pb-2">
           <button
-            className={`w-1/2 text-center py-2 transition-colors duration-300 ${activeTab === "login" ? "font-bold border-b-2 border-black" : "text-gray-500"}`}
+            className={`w-1/2 text-center py-2 transition-colors duration-300 ${activeTab === "login" ? "font-bold border-b-2 border-black "  : "text-gray-500"}`}
             onClick={() => {
               setActiveTab("login");
               resetForm();
@@ -124,7 +181,7 @@ export default function LoginPage() {
                   {showPassword ? <FaEyeSlash /> : <FaEye />}
                 </button>
               </div>
-              <button className="w-full py-2 bg-black text-white rounded" onClick={handleLogin}>Login</button>
+              <button className="w-full py-2 bg-black text-white rounded hover:bg-gray-900 transition" onClick={handleLogin}>Login</button>
             </div>
           ) : (
             <div>
@@ -143,7 +200,7 @@ export default function LoginPage() {
                   {showPassword ? <FaEyeSlash /> : <FaEye />}
                 </button>
               </div>
-              <button className="w-full py-2 bg-black text-white rounded" onClick={handleSignup}>Sign Up</button>
+              <button className="w-full py-2 bg-black text-white rounded hover:bg-gray-900 transition" onClick={handleSignup}>Sign Up</button>
             </div>
           )}
         </div>
