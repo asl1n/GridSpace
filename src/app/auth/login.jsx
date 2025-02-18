@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { FaEye, FaEyeSlash, FaArrowLeft } from "react-icons/fa"; 
+import { FaEye, FaEyeSlash, FaArrowLeft } from "react-icons/fa";
 import loginService from "@/app/services/loginService";
 import signupService from "@/app/services/signupService";
 import { toast } from "@/hooks/use-toast";
@@ -49,7 +49,9 @@ export default function LoginPage() {
       const response = await loginService.login(obj);
       if (response.status === 200) {
         // Check if the user is an admin
-        const isAdmin = response.data.user.roles.some((role) => role.name === "admin");
+        const isAdmin = response.data.user.roles.some(
+          (role) => role.name === "admin"
+        );
 
         if (isAdmin) {
           // Redirect to the dashboard if the user is an admin
@@ -67,7 +69,8 @@ export default function LoginPage() {
       } else {
         toast({
           title: "Login Failed",
-          description: response.message?.data?.error || "Invalid email or password.",
+          description:
+            response.message?.data?.error || "Invalid email or password.",
           variant: "destructive",
         });
       }
@@ -117,7 +120,8 @@ export default function LoginPage() {
     if (!phoneRegex.test(phone)) {
       toast({
         title: "Validation Error",
-        description: "Phone number must be 10 digits long and contain only numbers.",
+        description:
+          "Phone number must be 10 digits long and contain only numbers.",
         variant: "destructive",
       });
       return;
@@ -134,7 +138,8 @@ export default function LoginPage() {
 
     try {
       const response = await signupService.register(obj);
-      if (response.status === 200) {
+
+      if (response.status >= 200 && response.status < 300) {
         router.push("/");
         toast({
           title: "Account Created",
@@ -144,7 +149,8 @@ export default function LoginPage() {
       } else {
         toast({
           title: "Signup Failed",
-          description: response.message?.data?.error || "An error occurred during registration.",
+          description:
+            response.message || "An error occurred during registration.",
           variant: "destructive",
         });
       }
@@ -171,7 +177,9 @@ export default function LoginPage() {
         <div className="flex justify-between mb-4 border-b pb-2">
           <button
             className={`w-1/2 text-center py-2 transition-colors duration-300 ${
-              activeTab === "login" ? "font-bold border-b-2 border-black " : "text-gray-500"
+              activeTab === "login"
+                ? "font-bold border-b-2 border-black "
+                : "text-gray-500"
             }`}
             onClick={() => {
               setActiveTab("login");
@@ -182,7 +190,9 @@ export default function LoginPage() {
           </button>
           <button
             className={`w-1/2 text-center py-2 transition-colors duration-300 ${
-              activeTab === "signup" ? "font-bold border-b-2 border-black" : "text-gray-500"
+              activeTab === "signup"
+                ? "font-bold border-b-2 border-black"
+                : "text-gray-500"
             }`}
             onClick={() => {
               setActiveTab("signup");
@@ -197,7 +207,9 @@ export default function LoginPage() {
           {activeTab === "login" ? (
             <div>
               <h2 className="text-xl font-semibold mb-2">Login</h2>
-              <p className="text-gray-600 mb-4">Enter your credentials to access your account.</p>
+              <p className="text-gray-600 mb-4">
+                Enter your credentials to access your account.
+              </p>
               <input
                 className="w-full p-2 mb-2 border rounded"
                 type="email"
@@ -230,7 +242,9 @@ export default function LoginPage() {
           ) : (
             <div>
               <h2 className="text-xl font-semibold mb-2">Sign Up</h2>
-              <p className="text-gray-600 mb-4">Create a new account to get started.</p>
+              <p className="text-gray-600 mb-4">
+                Create a new account to get started.
+              </p>
               <input
                 className="w-full p-2 mb-2 border rounded"
                 type="text"
