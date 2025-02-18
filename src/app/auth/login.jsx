@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { FaEye, FaEyeSlash, FaArrowLeft } from "react-icons/fa"; // Import back arrow icon
+import { FaEye, FaEyeSlash, FaArrowLeft } from "react-icons/fa"; 
 import loginService from "@/app/services/loginService";
 import signupService from "@/app/services/signupService";
 import { toast } from "@/hooks/use-toast";
