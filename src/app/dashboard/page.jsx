@@ -1,5 +1,6 @@
 "use client";
 
+import AuthGuard from "@/components/AuthGuard"
 import { AppSidebar } from "@/components/app-sidebar"
 import { Separator } from "@/components/ui/separator"
 import {
@@ -60,6 +61,7 @@ export default function Dashboard() {
   if (!isClient) return null; 
 
   return (
+    <AuthGuard>
     <SidebarProvider>
       <AppSidebar />
       <SidebarInset>
@@ -130,5 +132,6 @@ export default function Dashboard() {
         </div>
       </SidebarInset>
     </SidebarProvider>
+    </AuthGuard>
   );
 }

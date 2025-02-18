@@ -1,15 +1,18 @@
 import apiManager from "./apiManager";
-// import moment from "moment";
 
-// ? logs in the user
-// param queryObj { phoneNumber, password }
 const login = async (queryObj) => {
   const message = await apiManager.axios
     .post(`/login`, queryObj)
     .then((response) => {
       localStorage.setItem("Authentication", response.data.access_token);
       localStorage.setItem("userId", response.data.user.id);
-      localStorage.setItem("role", response.data.user.roles.name);
+
+      // Check if user has admin role
+      const isAdmin = response.data.user.roles.some(
+        (role) => role.name === "admin"
+      );
+      localStorage.setItem("isAdmin", isAdmin.toString()); // Store as string
+
       localStorage.setItem("setupTime", new Date().getTime());
       return response;
     })
