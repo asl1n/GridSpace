@@ -76,7 +76,13 @@ export default function Discover() {
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
           className="mt-6 sm:mt-8 px-4 sm:px-6 py-2 sm:py-3 border border-white text-white rounded-lg 
-        hover:bg-white hover:text-black transition"
+  hover:bg-white hover:text-black transition"
+          onClick={() => {
+            const section = document.getElementById("membership");
+            if (section) {
+              section.scrollIntoView({ behavior: "smooth" });
+            }
+          }}
         >
           DISCOVER OUR MEMBERSHIP
         </motion.button>
